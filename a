@@ -1,0 +1,53 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+df = pd.read_csv('IMDB-Movie-Data.csv')
+temp=df[df['Genre']=='drama']
+#print(temp[''])
+#print(df)
+#df.info()
+dram_rating=0
+dram_count=0
+action_rating=0
+action_count=0
+horror_rating=0
+horror_count=0
+animation_rating=0
+animation_count=0
+comedy_rating=0
+comedy_count=0
+family_rating=0
+family_count=0
+
+def average(row):
+    global dram_count,dram_rating,family_count,family_rating,comedy_count,comedy_rating,animation_count,animation_rating,horror_count,horror_rating,action_count,action_rating
+    if row['Genre'].find("Drama")!=-1:
+        dram_rating+=row['Rating']
+        dram_count+=1
+    if row['Genre'].find("Family")!=-1:
+        family_rating+=row['Rating']
+        family_count+=1
+    if row['Genre'].find("Comedy")!=-1:
+        comedy_rating+=row['Rating']
+        comedy_count+=1
+    if row['Genre'].find("Animation")!=-1:
+        animation_rating+=row['Rating']
+        animation_count+=1
+    if row['Genre'].find("Horror")!=-1:
+        horror_rating+=row['Rating']
+        horror_count+=1
+    if row['Genre'].find("Action")!=-1:
+        action_rating+=row['Rating']
+        action_count+=1
+    return False
+df.apply(average,axis=1)
+print('Средний рейтинг драмы:', round(dram_rating/dram_count,2))
+print('Средний рейтинг cемейных фильмов:', round(family_rating/family_count,2))
+print('Средний рейтинг боевиков:', round(action_rating/action_count,2))
+print('Средний рейтинг ужастика:', round(horror_rating/horror_count,2))
+print('Средний рейтинг мультфильмов:', round(animation_rating/animation_count,2))
+print('Средний рейтинг комедий:', round(comedy_rating/comedy_count,2))
+a=pd.Series(data=[round(dram_rating/dram_count,2),round(family_rating/family_count,2),round(action_rating/action_count,2),round(horror_rating/horror_count,2),round(animation_rating/animation_count,2),round(comedy_rating/comedy_count,2)],
+index=['Drama' ,'Family' ,'Comedy' ,'Animation', 'Horror' ,'Action'])
+a.plot(kind='bar')
+#a.figsize = (8, 5)
+plt.show()
